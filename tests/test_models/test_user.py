@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Unittest for UserModel class"""
 
+from models.base_model import BaseModel
 import unittest
 from models.user import User
 
@@ -16,6 +17,11 @@ class test_User(unittest.TestCase):
     def tearDown(self):
         """Basic teardown functions"""
         pass
+
+    def test_amenity_superclass(self):
+        """Test that User is subclass of Base Model"""
+        new = self.value()
+        self.assertTrue(issubclass(new.__class__, BaseModel))
 
     def test_first_name(self):
         """Test first name attribute"""
