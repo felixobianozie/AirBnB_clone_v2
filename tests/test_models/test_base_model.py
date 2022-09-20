@@ -5,7 +5,7 @@ from models.base_model import BaseModel
 import uuid
 from datetime import datetime, time, date
 import os
-import pep8
+import pycodestyle
 
 
 class TestBaseModel(unittest.TestCase):
@@ -23,9 +23,9 @@ class TestBaseModel(unittest.TestCase):
         if os.path.isfile("file.json.temp"):
             os.rename("file.json.temp", "file.json")
 
-    def test_pep8(self):
+    def test_pycodestyle(self):
         """Applying pep8 checker to my baseModel class"""
-        style = pep8.StyleGuide()
+        style = pycodestyle.StyleGuide()
         result = style.check_files(["models/base_model.py"])
         self.assertEqual(result.total_errors, 0,
                          "there's an error found in the model")
