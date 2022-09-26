@@ -24,17 +24,38 @@ class HBNBCommand(cmd.Cmd):
                      "Place", "Review", "State"]
 
     def do_create(self, arg):
-        """\nCreates a new class instance.\nUsage: create <class name>\n"""
+        """\nCreates a new class instance.\nUsage: create <class name> \
+attributes<key="value"> ...\nNB: Some classes have mandatory attributes. Run class_names command.\n"""
         if not arg:
             print("** class name missing **")
             return
-        args = arg.split()  # Splits arg into its space seperated constituents
+        args = shlex.split(arg)  # Splits arg by shell lexical analysis style
+        args_py = arg.split()   # Splits arg by python lexical analisys style
         if args[0] not in self.list_of_class:
             print("** class doesn't exist **")
+            return
         else:
             new_inst = eval(args[0] + "()")
-            print(new_inst.id)
+            for i in range(1, len(args)):
+                param_key = args[i].split("=")[0]
+                param_val = (args[i].split("=")[1])
+                try:
+                    try:
+                        param_val = int(param_val) # Cast to int if value is int
+                    except ValueError:
+                        param_val = float(param_val) # Cast to float if value is float
+                except ValueError:
+                    if (args_py[i].split("=")[1][0] != "\""): # Is string in ""?
+                        tmp = "{} could not be created!"
+                        tmp2 = "String value must be in double quotes."
+                        tmp3 = tmp + tmp2
+                        print(tmp3.format(args_py[i]))
+                        continue
+                    param_val = param_val.replace("_", " ") # Else value remains as string
+                setattr(new_inst, param_key, param_val)
             new_inst.save()
+            print(new_inst.id)
+        return
 
     def do_show(self, arg):
         """\nPrints the string representation of an instance based \

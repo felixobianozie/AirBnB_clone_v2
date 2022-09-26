@@ -19,13 +19,34 @@ class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
-    def all(self):
+    def all(self, cls=None):
         """Returns the dictionary object"""
-        return self.__objects
+        if cls is None:
+            return self.__objects
+        else:
+            filtered_dict = {}
+            for key, value in self.__objects.items():
+                if (value.__class__ == cls):
+                    filtered_dict[key] = value
+            return filtered_dict
+
 
     def new(self, obj):
         """Sets in __objects the given obj with key <obj class name>.id"""
         self.__objects[obj.__class__.__name__ + "." + obj.id] = obj
+
+    def delete(self, obj=None):
+        """Deletes a given object from __objects"""
+        if obj is None:
+            return
+        else:
+            try:
+                tmp = obj.__class__.__name__ + "." + obj.id
+                self.__objects.pop(tmp)
+            except:
+                print("{} object not found!".format(obj.__class__.__name__))
+            finally:
+                return
 
     def save(self):
         """Serializes __objects to defined JSON file"""
