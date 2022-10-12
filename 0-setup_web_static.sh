@@ -1,33 +1,35 @@
 #!/usr/bin/env bash
+
 # Installs, configures, and starts the web server
-SERVER_CONFIG="server {
-	listen 80 default_server;
-	listen [::]:80 default_server;
 
-	server_name _;
-	index index.html index.htm;
-	error_page 404 /404.html;
-	add_header X-Served-By \$hostname;
-
-	location / {
-		root /var/www/html/;
-		try_files \$uri \$uri/ =404;
-	}
-
+SERVER_CONFIG=\
+"server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        root /var/www/html;
+        index index.html index.htm index.nginx-debian.html;
+        server_name _;
+        add_header X-Served-By $HOSTNAME;
+        location / {
+                try_files \$uri \$uri/ =404;
+                error_page 404 /404.html;
+        }
+        location /redirect_me{
+                return 301 https://github.com/felixobianozie;
+        }
+        location /rewrite_me{
+                rewrite / /rewrite.html;
+        }
+        location /404.html{
+                root /var/www/error;
+                index 404.html;
+        }
 	location /hbnb_static/ {
-		alias /data/web_static/current/;
-		try_files \$uri \$uri/ =404;
-	}
-
-	if (\$request_filename ~ redirect_me) {
-		rewrite ^ https://sketchfab.com/bluepeno/models permanent;
-	}
-
-	location = /404.html {
-		root /var/www/error/;
-		internal;
-	}
+                alias /data/web_static/current/;
+                try_files \$uri \$uri/ =404;
+        }
 }"
+
 HOME_PAGE="<!DOCTYPE html>
 <html lang='en-US'>
 	<head>
@@ -38,15 +40,14 @@ HOME_PAGE="<!DOCTYPE html>
 	<body>
 </html>
 "
+
 # shellcheck disable=SC2230
+
+# Install nginx if it doesnt exist
 if [[ "$(which nginx | grep -c nginx)" == '0' ]]; then
     apt-get update
     apt-get -y install nginx
 fi
-mkdir -p /var/www/html /var/www/error
-chmod -R 755 /var/www
-echo 'Hello World!' > /var/www/html/index.html
-echo -e "Ceci n\x27est pas une page" > /var/www/error/404.html
 
 mkdir -p /data/web_static/releases/test /data/web_static/shared
 echo -e "$HOME_PAGE" > /data/web_static/releases/test/index.html
