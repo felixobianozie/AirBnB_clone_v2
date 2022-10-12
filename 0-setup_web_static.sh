@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 # Installs, configures, and starts the web server
 
 SERVER_CONFIG=\
