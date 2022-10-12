@@ -28,7 +28,6 @@ SERVER_CONFIG=\
                 try_files \$uri \$uri/ =404;
         }
 }"
-
 HOME_PAGE="<!DOCTYPE html>
 <html lang='en-US'>
 	<head>
@@ -41,13 +40,10 @@ HOME_PAGE="<!DOCTYPE html>
 "
 
 # shellcheck disable=SC2230
-
-# Install nginx if it doesnt exist
 if [[ "$(which nginx | grep -c nginx)" == '0' ]]; then
     apt-get update
     apt-get -y install nginx
 fi
-
 mkdir -p /data/web_static/releases/test /data/web_static/shared
 echo -e "$HOME_PAGE" > /data/web_static/releases/test/index.html
 [ -d /data/web_static/current ] && rm -rf /data/web_static/current
