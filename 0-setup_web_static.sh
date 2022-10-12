@@ -37,19 +37,23 @@ HOME_PAGE="<!DOCTYPE html>
 </html>
 "
 # shellcheck disable=SC2230
+# Check that nginx exists, else install it
 if [[ "$(which nginx | grep -c nginx)" == '0' ]]; then
     apt-get update
     apt-get -y install nginx
 fi
+
+# Persist previous configuration
 mkdir -p /var/www/error
 touch /var/www/error/404.html
 touch /var/www/html/rewrite.html
 echo "Your rewrite request has been implemented!" > /var/www/html/rewrite.html
 echo "Ceci n'est pas une page" > /var/www/error/404.html
 
+# Updated configuration
 mkdir -p /data/web_static/releases/test /data/web_static/shared
 echo -e "$HOME_PAGE" > /data/web_static/releases/test/index.html
-[ -d /data/web_static/current ] && rm -rf /data/web_static/current
+rm -rf /data/web_static/current
 ln -sf /data/web_static/releases/test/ /data/web_static/current
 chown -hR ubuntu:ubuntu /data
 bash -c "echo -e '$SERVER_CONFIG' > /etc/nginx/sites-available/default"
