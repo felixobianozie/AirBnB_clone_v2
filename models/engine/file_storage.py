@@ -62,3 +62,7 @@ class FileStorage:
                 tmp_dict = json.load(file)
                 for key, value in tmp_dict.items():
                     self.__objects[key] = eval(key.split(".")[0])(**value)
+
+    def close(self):
+        """Closes the storage engine."""
+        self.reload()
