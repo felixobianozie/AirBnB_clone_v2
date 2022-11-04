@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """State module for HBNB project"""
 
+import models
 import os
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, ForeignKey
