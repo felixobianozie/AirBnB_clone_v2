@@ -25,7 +25,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, arg):
         """\nCreates a new class instance.\nUsage: create <class name> \
-attributes<key="value"> ...\nNB: Some classes have mandatory attributes. Run class_names command.\n"""
+attributes<key="value"> ...\nNB: Some classes have mandatory attributes. Run object_names command.\n"""
         if not arg:
             print("** class name missing **")
             return
