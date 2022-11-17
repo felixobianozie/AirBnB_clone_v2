@@ -193,10 +193,37 @@ Usage: update <class name> <id> <attribute name> "<attribute value>"\n"""
         print("\"{}\": is not a valid action of AirBnB console program!".format(line))
         return
 
-    def do_class_names(self, arg):
-        """\nPrints a list of all class names available for instantiation.
-Usage: class_names\n"""
+    def do_object_names(self, arg):
+        """
+        Prints a list of all object/class names available for instantiation.
+        Usage: object_names
+
+        """
         print(self.list_of_class)
+        attr_layout = """
+            Here is a breakdown of all mandatory attributes associated with
+            each object:
+
+            User:
+                mandatory: email, password
+                optional: first_name, last_name
+
+            State:
+                mandatory: name
+            Place:
+                mandatory: city_id, user_id, name, number_rooms, 
+                        number_bathrooms, max_guest, price_by_night
+                optional: description, latitude, longitude
+            Review:
+                mandatory: place_id, user_id, text
+            City
+                mandatory: name, state_id,
+            Amenity
+                mandatory: name
+            Base_model
+                dev purposes only! no mandatory attributes
+            """
+        print(attr_layout)
         return
 
 if __name__ == '__main__':
